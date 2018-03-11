@@ -5,20 +5,21 @@ Forme.prototype.paint = function (ctx) {
   ctx.strokeStyle = this.couleur;
 };
 
+
 Rectangle.prototype.paint = function (ctx) {
   ctx.beginPath();
-  ctx.lineWidth = this.epaisseur;
-  ctx.strokeStyle = this.couleur;
-  ctx.rect(this.x, this.y, this.largeur, this.hauteur);
+  ctx.lineWidth = this.getEpaisseur();
+  ctx.strokeStyle = this.getCouleur();
+  ctx.rect(this.getX(), this.getY(), this.getLargeur(), this.getHauteur());
   ctx.stroke();
 };
 
 Line.prototype.paint = function (ctx) {
   ctx.beginPath();
-  ctx.lineWidth = this.epaisseur;
-  ctx.strokeStyle = this.couleur;
-  ctx.moveTo(this.xa, this.ya);
-  ctx.lineTo(this.xb, this.yb);
+  ctx.lineWidth = this.getEpaisseur();
+  ctx.strokeStyle = this.getCouleur();
+  ctx.moveTo(this.getInitX(), this.getInitY());
+  ctx.lineTo(this.getFinalX(), this.getFinalY());
   ctx.stroke();
 };
 

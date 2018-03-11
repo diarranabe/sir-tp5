@@ -22,6 +22,9 @@ function DnD(canvas, interactor) {
   }.bind(this);
 
   this.mouseup = function (evt) {
+    if (this.start){
+
+    }
     var pos = getMousePosition(canvas, evt);
     this.finalX = pos.x;
     this.finalY = pos.y;
