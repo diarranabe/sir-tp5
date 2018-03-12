@@ -11,10 +11,15 @@ var ligne2 = new Line(650, 70, 400, 500, 10, 'green');
 var circle = new Circle(350, 200, 100, 10, 'blue');
 
 var drawing = new Drawing();
-drawing.formes.push(rec);
+// drawing.formes.push(rec);
 // drawing.formes.push(ligne);
-drawing.formes.push(ligne2);
-drawing.formes.push(circle);
+// drawing.formes.push(ligne2);
+// drawing.formes.push(circle);
+
+drawing.undoRedo.ajouter(rec);
+drawing.undoRedo.ajouter(ligne2);
+drawing.undoRedo.ajouter(circle);
+
 drawing.paint(ctx, canvas);
 
 // Code final à utiliser pour manipuler Pencil.
@@ -22,7 +27,8 @@ var pencil = new Pencil(ctx, drawing, canvas);
 
 function removeForm(index) {
   // Add shape and action to undoRedo list
-  drawing.formes.splice(index, 1);
+  // drawing.formes.splice(index, 1);
+  drawing.undoRedo.supprimer(index);
   pencil.updateShapeList();
   drawing.paint(ctx, canvas);
   console.log("remove : " + index);
@@ -42,25 +48,14 @@ function switchShape(index) {
   }
 }
 
-// Use that for polygom
-// Isue : how to change shape type?
-/*ctx.beginPath();
+function undo() {
+  drawing.undoRedo.undo();
+  drawing.paint(ctx, canvas);
+  pencil.updateShapeList();
+}
 
-var a =0;
-var b =100;
-var c =150;
-var d =100;
-
-ctx.moveTo(a+(c+a)/3, a+(c+a)/3);//75,50
-ctx.lineTo(c-((a+(c+a)/3)), 50);//175,50
-
-ctx.lineTo(150, 100);//200,75 sommet
-ctx.lineTo(100, 150);//175,100
-
-ctx.lineTo(50, 150);//75,100
-ctx.lineTo(0, 100);//50,75 init
-ctx.lineTo(50, 50);//50,75
-
-ctx.closePath();
-ctx.fillStyle = "green";
-ctx.stroke();*/
+function redo() {
+  drawing.undoRedo.redo();
+  drawing.paint(ctx, canvas);
+  pencil.updateShapeList();
+}

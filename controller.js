@@ -81,8 +81,8 @@ function Pencil(ctx, drawing, canvas) {
   this.onInteractionEnd = function (dnd) {
     console.log("Current");
     console.log(this.currentShape);
-    drawing.formes.push(this.currentShape);
-
+    // drawing.formes.push(this.currentShape);
+    drawing.undoRedo.ajouter(this.currentShape);
     // Add shape and action to undoRedo list
     drawing.paint(ctx, canvas);
     this.updateShapeList();
