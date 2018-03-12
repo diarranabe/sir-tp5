@@ -23,12 +23,19 @@ Line.prototype.paint = function (ctx) {
   ctx.stroke();
 };
 
+Circle.prototype.paint = function (ctx) {
+  ctx.beginPath();
+  ctx.lineWidth = this.getEpaisseur();
+  ctx.strokeStyle = this.getCouleur();
+  ctx.arc(this.getX(), this.getY(), this.getRayon(), 0, 2 * Math.PI);
+  ctx.stroke();
+};
 
-Drawing.prototype.paint = function(ctx, canvas) {
+Drawing.prototype.paint = function (ctx, canvas) {
   console.log(this.formes);
   ctx.fillStyle = '#F0F0F0'; // set canvas' background color
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  this.formes.forEach(function(eltDuTableau) {
-      eltDuTableau.paint(ctx);
+  this.formes.forEach(function (eltDuTableau) {
+    eltDuTableau.paint(ctx);
   });
 };

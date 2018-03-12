@@ -16,10 +16,15 @@
 				<input type="radio" name="mx" value="0" id="butRect" checked>
 				<label for="butRect" unselectable>Rectangle</label>
 				</div>
-			<div class="mx-button" onclick="switchShape(1)">
-				<input type="radio" name="mx" value="1" id="butLine" checked>
-				<label for="butLine" unselectable>Line</label>
-				</div>
+      <div class="mx-button" onclick="switchShape(1)">
+        <input type="radio" name="mx" value="1" id="butLine">
+        <label for="butLine" unselectable>Line</label>
+      </div>
+
+      <div class="mx-button" onclick="switchShape(2)">
+        <input type="radio" name="mx" value="1" id="butCircle" >
+        <label for="butCircle" unselectable>Circle</label>
+      </div>
 		</form>
 		<input id="spinnerWidth" type="number" min="1" max="50" step="1" value="5" size="4">
 		<input id="colour" type="color">
@@ -35,7 +40,8 @@
 			</div>
 
 			<div class="col-md-4">
-				<ul class="list-unstyled" id="shapeList">
+        <h3>Liste des formes</h3>
+				<ul class='list-group' id="shapeList">
           <li>item</li>
           <li>item</li>
 				</ul>

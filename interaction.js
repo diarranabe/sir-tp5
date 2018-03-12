@@ -6,7 +6,8 @@ function DnD(canvas, interactor) {
   this.initY = 0;
   this.finalX = 0;
   this.finalY = 0;
-  this.start = false;
+  this.pression = false;
+  this.moving = false;
 
 
   // Developper les 3 fonctions gérant les événements
@@ -14,34 +15,35 @@ function DnD(canvas, interactor) {
     var pos = getMousePosition(canvas, evt);
     this.initX = pos.x;
     this.initY = pos.y;
-    this.start = true;
+    this.pression = true;
     interactor.onInteractionStart(this);
 
     console.log("mousedown");
     console.log(pos);
   }.bind(this);
 
-  this.mouseup = function (evt) {
-    if (this.start){
-
-    }
-    var pos = getMousePosition(canvas, evt);
-    this.finalX = pos.x;
-    this.finalY = pos.y;
-    this.start = false;
-
-    interactor.onInteractionEnd(this);
-    console.log("mouseup");
-    console.log(pos);
-  }.bind(this);
-
   this.mousemove = function (evt) {
-    if (this.start){
+    if (this.pression){
+      this.moving = true;
       var pos = getMousePosition(canvas, evt);
       this.finalX = pos.x;
       this.finalY = pos.y;
       interactor.onInteractionUpdate(this);
       console.log("mousemove");
+    }
+  }.bind(this);
+
+  this.mouseup = function (evt) {
+    if (this.moving){
+      var pos = getMousePosition(canvas, evt);
+      this.finalX = pos.x;
+      this.finalY = pos.y;
+      this.pression = false;
+      this.moving = false;
+
+      interactor.onInteractionEnd(this);
+      console.log("mouseup");
+      console.log(pos);
     }
   }.bind(this);
 
@@ -56,8 +58,8 @@ function DnD(canvas, interactor) {
 function getMousePosition(canvas, evt) {
   var rect = canvas.getBoundingClientRect();
   return {
-    x: evt.clientX - rect.left,
-    y: evt.clientY - rect.top
+    x: Math.round(evt.clientX - rect.left),
+    y: Math.round(evt.clientY - rect.top)
   };
 };
 
