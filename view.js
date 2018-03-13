@@ -32,7 +32,7 @@ Circle.prototype.paint = function (ctx) {
 };
 
 Drawing.prototype.paint = function (ctx, canvas) {
-  console.log(this.formes);
+  // console.log(this.formes);
   ctx.fillStyle = '#F0F0F0'; // set canvas' background color
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   this.formes.forEach(function (eltDuTableau) {

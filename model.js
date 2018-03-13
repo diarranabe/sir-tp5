@@ -1,6 +1,3 @@
-// Implémenter ici les 4 classes du modèle.
-// N'oubliez pas l'héritage !
-
 var formesAtcions = {ajout: 0, suppression: 1};
 
 function Drawing() {
@@ -18,11 +15,11 @@ function Forme(epaisseur, couleur) {
 
   this.getEpaisseur = function () {
     return this.epaisseur;
-  };
+  }.bind(this);
 
   this.getCouleur = function () {
     return this.couleur;
-  };
+  }.bind(this);
 };
 
 function Rectangle(x, y, largeur, hauteur, epaisseur, couleur) {
@@ -105,7 +102,6 @@ function UndoRedo(drawing) {
     this.drawing.getFormes().push(forme);
     this.undoActions.push(new ActionForme(formesAtcions.ajout, forme));
     this.currIndex++;
-    console.log("Undo add");
   }.bind(this);
 
   this.supprimer = function (indice) {
@@ -117,48 +113,41 @@ function UndoRedo(drawing) {
   }.bind(this);
 
   this.undo = function () {
-    console.log("Undo function : "+this.undoActions.length);
-    // console.log(this.undoActions);
-
     if (this.undoActions.length > 0) {
+      console.log("Undo function : " + this.undoActions.length);
       var action = this.undoActions.pop();
       this.redoActions.push(action);
-      // console.log(action);
-
       switch (action.action) {
         case formesAtcions.ajout:
-          console.log("Undo ajout");
+          console.log("--> ajout");
           this.drawing.getFormes().splice(this.currIndex - 1, 1);
           this.currIndex--;
           break;
         case formesAtcions.suppression:
-          console.log("Undo suppress");
-          this.drawing.getFormes().push(action.forme);
+          console.log("--> suppress");
+          this.drawing.undoRedo.ajouter(action.forme);
           this.currIndex--;
           break;
       }
+      console.log("Undo done");
     }
-    console.log("Undo done");
   }.bind(this);
 
   this.redo = function () {
-    console.log("Redo function : "+this.redoActions.length);
-    // console.log(this.redoActions);
     if (this.redoActions.length > 0) {
-      // this.currIndex++;
+      console.log("Redo function : " + this.redoActions.length);
       var action = this.redoActions.pop();
       switch (action.action) {
         case formesAtcions.ajout:
-          console.log("ajout --");
+          console.log("--> ajout");
           this.drawing.undoRedo.ajouter(action.forme);
           break;
         case formesAtcions.suppression:
-          console.log("suppress -- ");
-          // this.drawing.getFormes().push(action.forme);
+          // console.log("suppress -- ");
           break;
       }
+      console.log("Redo done");
     }
-    console.log("Redo done");
   }.bind(this);
 };
 

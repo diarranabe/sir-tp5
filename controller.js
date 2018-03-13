@@ -6,8 +6,6 @@ function Pencil(ctx, drawing, canvas) {
   this.currColour = '#000000';
   this.currentShape = 0;
 
-  // Liez ici les widgets à la classe pour modifier les attributs présents ci-dessus.
-
   new DnD(canvas, this);
 
   this.updateShapeList = function () {
@@ -33,13 +31,10 @@ function Pencil(ctx, drawing, canvas) {
 
           "</li>";
       }
-      console.log(form)
     });
   };
   this.updateShapeList();
 
-
-  // Implémentez ici les 3 fonctions onInteractionStart, onInteractionUpdate et onInteractionEnd
   this.onInteractionStart = function (dnd) {
     this.currLineWidth = document.getElementById("spinnerWidth").value;
     this.currColour = document.getElementById("colour").value;
@@ -62,15 +57,12 @@ function Pencil(ctx, drawing, canvas) {
       case editingMode.circle: {
         this.currentShape = new Line(dnd.initX, dnd.initY, dnd.finalX, dnd.finalY, this.currLineWidth, this.currColour);
         var rayon = Math.abs((dnd.finalX - dnd.initX) / 2);
-        //Math.abs((((dnd.finalX - dnd.initX) / 2) + ((dnd.finalY - dnd.initY) / 2)) / 2)
         if (rayon < Math.abs(((dnd.finalY - dnd.initY) / 2))) {
           rayon = Math.abs((dnd.finalY - dnd.initY) / 2);
         }
 
-        // this.currentShape = new Circle((dnd.initX + dnd.finalX) / 2, (dnd.initY + dnd.finalY) / 2,
         this.currentShape = new Circle(dnd.initX + (dnd.finalX - dnd.initX) / 2, dnd.initY + (dnd.finalY - dnd.initY) / 2,
           rayon, this.currLineWidth, this.currColour);
-        //Math.abs((dnd.finalX - dnd.initX) / 2), this.currLineWidth, this.currColour);
         drawing.paint(ctx, canvas);
         this.currentShape.paint(ctx, canvas);
         break;
@@ -79,15 +71,12 @@ function Pencil(ctx, drawing, canvas) {
   };
 
   this.onInteractionEnd = function (dnd) {
-    console.log("Current");
+    console.log("New Shape");
     console.log(this.currentShape);
-    // drawing.formes.push(this.currentShape);
     drawing.undoRedo.ajouter(this.currentShape);
-    // Add shape and action to undoRedo list
     drawing.paint(ctx, canvas);
     this.updateShapeList();
   };
-
 };
 
 
