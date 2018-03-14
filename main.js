@@ -5,16 +5,19 @@ canvas.width = 700;
 canvas.height = 600;
 
 // Code temporaire pour tester l'affiche de la vue
-var rec = new Rectangle(10, 20, 200, 100, 10, 'red');
-var ligne = new Line(20, 20, 300, 100, 5, '#000AAA');
-var ligne2 = new Line(650, 70, 400, 500, 10, 'green');
-var circle = new Circle(350, 200, 100, 10, 'blue');
+var rec = new Rectangle(10, 20, 200, 100, 10, 'red',0);
+var ligne = new Line(20, 500, 275, 133, 8, '#000AAA');
+var ligne2 = new Line(660, 150, 422, 470, 10, 'green',0);
+var circle = new Circle(350, 200, 100, 10, 'blue',1);
+var circle2 = new Circle(350, 400, 100, 10, 'red',0);
 
 var drawing = new Drawing();
 
 drawing.undoRedo.ajouter(rec);
+drawing.undoRedo.ajouter(ligne);
 drawing.undoRedo.ajouter(ligne2);
 drawing.undoRedo.ajouter(circle);
+drawing.undoRedo.ajouter(circle2);
 
 drawing.paint(ctx, canvas);
 

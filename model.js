@@ -1,17 +1,31 @@
 var formesAtcions = {ajout: 0, suppression: 1};
+var formesStyles = {plain: 0, dashed: 1};
 
+/**
+ * Conteneur des formes
+ * Gère le undoRedo en action
+ * @constructor
+ */
 function Drawing() {
-  this.formes = new Array();
-
+  this.formes = [];
   this.undoRedo = new UndoRedo(this);
+
   this.getFormes = function () {
     return this.formes;
   }.bind(this);
 };
 
-function Forme(epaisseur, couleur) {
+/**
+ * Classe mère de Rectangle, Line et Circle
+ * @param epaisseur epaisseur
+ * @param couleur couleur
+ * @param style (plain ou discontinue)
+ * @constructor
+ */
+function Forme(epaisseur, couleur, style) {
   this.epaisseur = epaisseur;
   this.couleur = couleur;
+  this.style = style;
 
   this.getEpaisseur = function () {
     return this.epaisseur;
@@ -20,10 +34,25 @@ function Forme(epaisseur, couleur) {
   this.getCouleur = function () {
     return this.couleur;
   }.bind(this);
+
+  this.getStyle = function () {
+    return this.style;
+  }.bind(this);
 };
 
-function Rectangle(x, y, largeur, hauteur, epaisseur, couleur) {
-  Forme.call(this, epaisseur, couleur);
+/**
+ *
+ * @param x abcisse
+ * @param y ordonnée
+ * @param largeur largeur
+ * @param hauteur hauteur
+ * @param epaisseur epaisseur
+ * @param couleur couleur
+ * @param style (plain ou discontinue)
+ * @constructor
+ */
+function Rectangle(x, y, largeur, hauteur, epaisseur, couleur, style) {
+  Forme.call(this, epaisseur, couleur, style);
   this.x = x;
   this.y = y;
   this.largeur = largeur;
@@ -47,8 +76,19 @@ function Rectangle(x, y, largeur, hauteur, epaisseur, couleur) {
 };
 Rectangle.prototype = new Forme();
 
-function Line(xa, ya, xb, yb, epaisseur, couleur) {
-  Forme.call(this, epaisseur, couleur);
+/**
+ * Classe des lignes
+ * @param xa abcisse de depart
+ * @param ya ordonnée de depart
+ * @param xb abcisse de fin
+ * @param yb ordonnée de fin
+ * @param epaisseur epaisseur
+ * @param couleur couleur
+ * @param style (plain ou discontinue)
+ * @constructor
+ */
+function Line(xa, ya, xb, yb, epaisseur, couleur, style) {
+  Forme.call(this, epaisseur, couleur, style);
   this.initx = xa;
   this.inity = ya;
   this.finalx = xb;
@@ -72,8 +112,18 @@ function Line(xa, ya, xb, yb, epaisseur, couleur) {
 };
 Line.prototype = new Forme();
 
-function Circle(x, y, rayon, epaisseur, couleur) {
-  Forme.call(this, epaisseur, couleur);
+/**
+ * Classe des cercles
+ * @param x abcisse
+ * @param y ordonnée
+ * @param rayon le rayon
+ * @param epaisseur epaisseur
+ * @param couleur couleur
+ * @param style (plain ou discontinue)
+ * @constructor
+ */
+function Circle(x, y, rayon, epaisseur, couleur, style) {
+  Forme.call(this, epaisseur, couleur, style);
   this.x = x;
   this.y = y;
   this.rayon = rayon;
@@ -92,9 +142,14 @@ function Circle(x, y, rayon, epaisseur, couleur) {
 };
 Circle.prototype = new Forme();
 
+/**
+ * Classe qui gère le undoRedo
+ * @param drawing le drawing manipulé
+ * @constructor
+ */
 function UndoRedo(drawing) {
-  this.undoActions = new Array();
-  this.redoActions = new Array();
+  this.undoActions = [];
+  this.redoActions = [];
   this.drawing = drawing;
   this.currIndex = 0;
 
@@ -105,7 +160,6 @@ function UndoRedo(drawing) {
   }.bind(this);
 
   this.supprimer = function (indice) {
-    console.log("Undo suppress -->" + indice);
     var forms = this.drawing.getFormes();
     this.undoActions.push(new ActionForme(formesAtcions.suppression, forms[indice]));
     this.drawing.getFormes().splice(indice, 1);
@@ -151,6 +205,12 @@ function UndoRedo(drawing) {
   }.bind(this);
 };
 
+/**
+ * Action stockée dans les tableaux undo et redo
+ * @param action code de l'action (ajout:0, 1:suppression)
+ * @param forme action manipulée
+ * @constructor
+ */
 function ActionForme(action, forme) {
   this.action = action;
   this.forme = forme;

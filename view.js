@@ -5,9 +5,17 @@ Forme.prototype.paint = function (ctx) {
   ctx.strokeStyle = this.couleur;
 };
 
+function setStyle(ctx, forme) {
+  if (forme.getStyle() == 0) {
+    ctx.setLineDash([]);
+  } else {
+    ctx.setLineDash([10, 5]);
+  }
+}
 
 Rectangle.prototype.paint = function (ctx) {
   ctx.beginPath();
+  setStyle(ctx, this);
   ctx.lineWidth = this.getEpaisseur();
   ctx.strokeStyle = this.getCouleur();
   ctx.rect(this.getX(), this.getY(), this.getLargeur(), this.getHauteur());
@@ -16,6 +24,7 @@ Rectangle.prototype.paint = function (ctx) {
 
 Line.prototype.paint = function (ctx) {
   ctx.beginPath();
+  setStyle(ctx, this);
   ctx.lineWidth = this.getEpaisseur();
   ctx.strokeStyle = this.getCouleur();
   ctx.moveTo(this.getInitX(), this.getInitY());
@@ -25,6 +34,7 @@ Line.prototype.paint = function (ctx) {
 
 Circle.prototype.paint = function (ctx) {
   ctx.beginPath();
+  setStyle(ctx, this);
   ctx.lineWidth = this.getEpaisseur();
   ctx.strokeStyle = this.getCouleur();
   ctx.arc(this.getX(), this.getY(), this.getRayon(), 0, 2 * Math.PI);
@@ -32,7 +42,6 @@ Circle.prototype.paint = function (ctx) {
 };
 
 Drawing.prototype.paint = function (ctx, canvas) {
-  // console.log(this.formes);
   ctx.fillStyle = '#F0F0F0'; // set canvas' background color
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   this.formes.forEach(function (eltDuTableau) {
